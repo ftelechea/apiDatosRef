@@ -4,10 +4,10 @@
 # Nginx actuando como un front-end reverse proxy.
 ####################################################################################
 
+#Copiar o clonar de github (este repositorio) archivos de app
 
-#Crear directorio para app y crear entorno virtual Python
-mkdir apiDatosReferenciales
-cd apiDatosReferenciales
+#crear entorno virtual Python
+cd apiDatosRef
 
 #Crear ambiente Python virtual
 sudo python3 -m venv venv
@@ -18,7 +18,6 @@ source venv/bin/activate
 #Para instalar paquetes a partir de archivo requirements.txt
 pip install -r requirements.txt
 
-#Luego copiar o clonar de git archivos de app
 
 ############### Configurar servicio Gunicorn ###########################
 
@@ -32,11 +31,11 @@ Description=Instancia Gunicorn para atender peticiones de la API de Datos Refere
 After=network.target
 
 [Service]
-User=ftelechea
+User=root
 Group=adm
-WorkingDirectory=/home/ftelechea/pythonProjects/apiDatosReferenciales/
-Environment="PATH=/home/ftelechea/pythonProjects/apiDatosReferenciales/venv/bin/"
-ExecStart=/home/ftelechea/pythonProjects/apiDatosReferenciales/venv/bin/gunicorn --workers 2 --bind unix:api_datosref.sock -m 007 wsgi:app
+WorkingDirectory=/opt/apiDatosRef/
+Environment="PATH=/opt/apiDatosRef/venv/bin/"
+ExecStart=/opt/apiDatosRef/venv/bin/gunicorn --workers 2 --bind unix:api_datosref.sock -m 007 wsgi:app
 
 [Install]
 WantedBy=multi-user.target
@@ -65,41 +64,22 @@ server {
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/home/ftelechea/pythonProjects/apiDatosReferenciales/api_datosref.sock;
+        proxy_pass http://unix:/opt/apiDatosRef/api_datosref.sock;
     }
 }
-
 
 #crear symlink hacia sites-enabled
 sudo ln -s /etc/nginx/sites-available/api_datosref /etc/nginx/sites-enabled
 
-#revisar en archivo de configuración de nginx el usuario 
+#revisar en archivo de configuración de nginx el usuario seteado 
 sudo nano /etc/nginx/nginx.conf
 
-########################### Sobre NGINX ##########################
-#Ver LOGS NGINX:
-cat /var/log/nginx/access.log
-cat /var/log/nginx/error.log
 
-#testear sintaxis con
+#chequear sintaxis con
 sudo nginx -t
 
 #reiniciar 
 sudo service nginx restart
-
-#detener
-sudo service nginx stop
-
-#iniciar
-sudo service nginx start
-
-#archivo de configuración de nginx 
-sudo nano /etc/nginx/nginx.conf
-
-
-################################################################
-
-
 
 
 
