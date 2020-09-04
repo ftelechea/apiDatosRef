@@ -1,4 +1,4 @@
-# DESPLEGAR APLICACION FLASK CON GUNICORN & NGINX 
+# Desplegar aplicación flask con gunicorn & nginx 
 Paso a paso para:
 * Crear entorno virtual e instalar paquetes a partir de requirements.txt
 * Configurar Gunicorn como application server
