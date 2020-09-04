@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 ### Configurar servicio Gunicorn 
 
-Crear archivo .service en directorio /etc/systemd/system para configurar servicio de Gunicorn para las peticiones de la API:
+Crear archivo .service (utilizando el editor de su preferencia, en este caso nano), en directorio /etc/systemd/system para configurar servicio de Gunicorn para las peticiones de la API:
 * sudo nano /etc/systemd/system/api_datosref.service
 * ingresar el siguiente contenido en el archivo:
 
